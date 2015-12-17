@@ -37,6 +37,11 @@ module Extensions
         version = params['version'] ? "/#{params['version']}" : nil
         url     = params['url']     ? " -url #{params['url']}" : nil
 
+        command = "chmod +x #{node.elasticsearch[:bindir]}/plugin"
+        Chef::Log.debug command
+
+        raise "[!] Failed to change permissions on plugin" unless system command
+
         command = "#{node.elasticsearch[:bindir]}/plugin -install #{name}#{version}#{url}"
         Chef::Log.debug command
 
